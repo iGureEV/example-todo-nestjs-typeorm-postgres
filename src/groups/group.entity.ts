@@ -1,7 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Task } from '../tasks/task.entity';
 
 @Entity()
-export class Task {
+export class Group {
   @PrimaryGeneratedColumn()
   id!: number;
 
@@ -11,15 +12,12 @@ export class Task {
   @Column({ type: 'varchar', length: 256 })
   description?: string;
 
-  @Column({ default: false })
-  isComplete!: boolean;
-
-  @Column()
-  group?: number;
-
   @Column({ name: 'created_at', type: 'timestamp', default: 'now()' })
-  createdAt!: Date;
+  createdAt?: Date;
 
   @Column({ name: 'update_at', type: 'timestamp', default: 'now()' })
-  updatesAt?: Date;
+  updatedAt?: Date;
+
+  @OneToMany(() => Task, (task) => task.group)
+  tasks: Task[];
 }
