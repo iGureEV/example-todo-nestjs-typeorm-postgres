@@ -8,4 +8,4 @@ import { TasksController } from './tasks.controller';
   providers: [TasksService],
   controllers: [TasksController],
 })
-export class TaskHttpModule {}
+export class TasksHttpModule {}

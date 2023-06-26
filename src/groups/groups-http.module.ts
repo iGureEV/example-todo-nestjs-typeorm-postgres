@@ -8,4 +8,4 @@ import { GroupsController } from './groups.controller';
   providers: [GroupsService],
   controllers: [GroupsController],
 })
-export class UserHttpModule {}
+export class GroupsHttpModule {}

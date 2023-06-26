@@ -6,6 +6,7 @@ import {
   Delete,
   Param,
   Body,
+  HttpCode,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { Task } from './task.entity';
@@ -25,6 +26,7 @@ export class TasksController {
   }
 
   @Post()
+  @HttpCode(201)
   async create(@Body() data: Partial<Task>): Promise<Task> {
     return this.tasksService.create(data);
   }
