@@ -1,28 +1,28 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Task } from './task.entity';
+import { TaskEntity } from './task.entity';
 
 @Injectable()
 export class TasksService {
   constructor(
-    @InjectRepository(Task)
-    private tasksRepository: Repository<Task>,
+    @InjectRepository(TaskEntity)
+    private tasksRepository: Repository<TaskEntity>,
   ) {}
 
-  findAll(): Promise<Task[]> {
+  findAll(): Promise<TaskEntity[]> {
     return this.tasksRepository.find();
   }
 
-  findById(id: number): Promise<Task | null> {
+  findById(id: number): Promise<TaskEntity | null> {
     return this.tasksRepository.findOneBy({ id });
   }
 
-  async create(data: Partial<Task>): Promise<Task> {
+  async create(data: Partial<TaskEntity>): Promise<TaskEntity> {
     return this.tasksRepository.create(data);
   }
 
-  async update(id: number, data: Partial<Task>): Promise<void> {
+  async update(id: number, data: Partial<TaskEntity>): Promise<void> {
     await this.tasksRepository.update(id, data);
   }
 

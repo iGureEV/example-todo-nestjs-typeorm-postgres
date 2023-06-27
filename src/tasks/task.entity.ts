@@ -6,10 +6,10 @@ import {
   UpdateDateColumn,
   ManyToOne,
 } from 'typeorm';
-import { Group } from '../groups/group.entity';
+import { GroupEntity } from '../groups/group.entity';
 
-@Entity('')
-export class Task {
+@Entity('task')
+export class TaskEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -22,8 +22,8 @@ export class Task {
   @Column({ nullable: true })
   isComplete: boolean;
 
-  @ManyToOne(() => Group, (group) => group.id, { nullable: true })
-  group: Group;
+  @ManyToOne(() => GroupEntity, (group) => group.id, { nullable: true })
+  group: GroupEntity;
 
   @CreateDateColumn({ type: 'timestamp with time zone' })
   createdAt: Date;

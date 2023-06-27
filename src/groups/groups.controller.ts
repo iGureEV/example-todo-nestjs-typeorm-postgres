@@ -10,32 +10,32 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { GroupsService } from './groups.service';
-import { Group } from './group.entity';
+import { GroupEntity } from './group.entity';
 
 @Controller('groups')
 export class GroupsController {
   constructor(private readonly groupsService: GroupsService) {}
 
   @Get()
-  findAll(): Promise<Group[]> {
+  findAll(): Promise<GroupEntity[]> {
     return this.groupsService.findAll();
   }
 
   @Get('/:id')
-  async findById(@Param('id') id: number): Promise<Group | null> {
+  async findById(@Param('id') id: number): Promise<GroupEntity | null> {
     return this.groupsService.findById(id);
   }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  async create(@Body() data: Partial<Group>): Promise<Group> {
+  async create(@Body() data: Partial<GroupEntity>): Promise<GroupEntity> {
     return this.groupsService.create(data);
   }
 
   @Patch('/:id')
   async update(
     @Param('id') id: number,
-    @Body() data: Partial<Group>,
+    @Body() data: Partial<GroupEntity>,
   ): Promise<void> {
     return this.groupsService.update(id, data);
   }

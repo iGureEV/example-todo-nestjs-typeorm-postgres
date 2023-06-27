@@ -6,10 +6,10 @@ import {
   UpdateDateColumn,
   OneToMany,
 } from 'typeorm';
-import { Task } from '../tasks/task.entity';
+import { TaskEntity } from '../tasks/task.entity';
 
-@Entity()
-export class Group {
+@Entity('group')
+export class GroupEntity {
   @PrimaryGeneratedColumn()
   public id: number;
 
@@ -25,6 +25,6 @@ export class Group {
   @UpdateDateColumn({ type: 'timestamp with time zone', nullable: true })
   public updatedAt: Date;
 
-  @OneToMany(() => Task, (task) => task.group)
-  public tasks: Task[];
+  @OneToMany(() => TaskEntity, (task) => task.group)
+  public tasks: TaskEntity[];
 }

@@ -1,28 +1,28 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Group } from './group.entity';
+import { GroupEntity } from './group.entity';
 
 @Injectable()
 export class GroupsService {
   constructor(
-    @InjectRepository(Group)
-    private groupsRepository: Repository<Group>,
+    @InjectRepository(GroupEntity)
+    private groupsRepository: Repository<GroupEntity>,
   ) {}
 
-  findAll(): Promise<Group[]> {
+  findAll(): Promise<GroupEntity[]> {
     return this.groupsRepository.find();
   }
 
-  findById(id: number): Promise<Group | null> {
+  findById(id: number): Promise<GroupEntity | null> {
     return this.groupsRepository.findOneBy({ id });
   }
 
-  async create(data: Partial<Group>): Promise<Group> {
+  async create(data: Partial<GroupEntity>): Promise<GroupEntity> {
     return await this.groupsRepository.create(data);
   }
 
-  async update(id: number, data: Partial<Group>): Promise<void> {
+  async update(id: number, data: Partial<GroupEntity>): Promise<void> {
     await this.groupsRepository.update(id, data);
   }
 

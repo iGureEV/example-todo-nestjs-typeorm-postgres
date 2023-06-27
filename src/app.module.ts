@@ -2,8 +2,8 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { Group, GroupsModule } from './groups';
-import { Task, TasksModule } from './tasks';
+import { GroupEntity, GroupsModule } from './groups';
+import { TaskEntity, TasksModule } from './tasks';
 
 @Module({
   imports: [
@@ -14,7 +14,7 @@ import { Task, TasksModule } from './tasks';
       username: 'pguser',
       password: 'pgpass',
       database: 'tasks1db',
-      entities: [Group, Task],
+      entities: [GroupEntity, TaskEntity],
       synchronize: true,
     }),
     GroupsModule,
