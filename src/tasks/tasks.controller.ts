@@ -10,7 +10,12 @@ import {
   ParseIntPipe,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
-import { TaskCreateDto, TaskUpdateDto, TaskItemDto } from './task.dto';
+import {
+  TaskCreateDto,
+  TaskUpdateDto,
+  TaskItemDto,
+  TaskItemListDto,
+} from './task.dto';
 
 @Controller('tasks')
 export class TasksController {
@@ -24,7 +29,7 @@ export class TasksController {
   @Get(':id')
   async findById(
     @Param('id', ParseIntPipe) id: number,
-  ): Promise<TaskItemDto | null> {
+  ): Promise<TaskItemListDto | null> {
     return this.tasksService.findById(id);
   }
 
@@ -38,12 +43,12 @@ export class TasksController {
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() taskDateDto: TaskUpdateDto,
-  ): Promise<void> {
+  ): Promise<TaskItemDto> {
     return this.tasksService.update(id, taskDateDto);
   }
 
   @Patch(':id/done')
-  async complete(@Param('id', ParseIntPipe) id: number): Promise<void> {
+  async complete(@Param('id', ParseIntPipe) id: number): Promise<TaskItemDto> {
     return this.tasksService.update(id, { isComplete: true });
   }
 

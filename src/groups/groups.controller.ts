@@ -11,7 +11,12 @@ import {
   ParseIntPipe,
 } from '@nestjs/common';
 import { GroupsService } from './groups.service';
-import { GroupCreateDto, GroupUpdateDto, GroupItemDto } from './group.dto';
+import {
+  GroupCreateDto,
+  GroupUpdateDto,
+  GroupItemDto,
+  GroupItemListDto,
+} from './group.dto';
 
 @Controller('groups')
 export class GroupsController {
@@ -25,7 +30,7 @@ export class GroupsController {
   @Get('/:id')
   async findById(
     @Param('id', ParseIntPipe) id: number,
-  ): Promise<GroupItemDto | null> {
+  ): Promise<GroupItemListDto | null> {
     return this.groupsService.findById(id);
   }
 
@@ -39,7 +44,7 @@ export class GroupsController {
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() groupDateDto: GroupUpdateDto,
-  ): Promise<void> {
+  ): Promise<GroupItemDto> {
     return this.groupsService.update(id, groupDateDto);
   }
 

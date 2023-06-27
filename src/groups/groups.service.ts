@@ -15,15 +15,19 @@ export class GroupsService {
   }
 
   findById(id: number): Promise<GroupEntity | null> {
-    return this.groupsRepository.findOneBy({ id });
+    return this.groupsRepository.findOne({
+      relations: ['tasks'],
+      loadRelationIds: false,
+      where: { id },
+    });
   }
 
   async create(data: Partial<GroupEntity>): Promise<GroupEntity> {
     return await this.groupsRepository.save(data);
   }
 
-  async update(id: number, data: Partial<GroupEntity>): Promise<void> {
-    await this.groupsRepository.update(id, data);
+  async update(id: number, data: Partial<GroupEntity>): Promise<GroupEntity> {
+    return await this.groupsRepository.save({ ...data, id });
   }
 
   async delete(id: number): Promise<void> {

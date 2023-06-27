@@ -22,7 +22,10 @@ export class TaskEntity {
   @Column({ nullable: true })
   isComplete: boolean;
 
-  @ManyToOne(() => GroupEntity, (group) => group.id, { nullable: true })
+  @ManyToOne(() => GroupEntity, (group) => group.id, {
+    nullable: true,
+    onDelete: 'CASCADE',
+  })
   group: GroupEntity;
 
   @CreateDateColumn({ type: 'timestamp with time zone' })

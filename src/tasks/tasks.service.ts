@@ -11,19 +11,22 @@ export class TasksService {
   ) {}
 
   findAll(): Promise<TaskEntity[]> {
-    return this.tasksRepository.find();
+    return this.tasksRepository.find({
+      relations: ['group'],
+      loadRelationIds: false,
+    });
   }
 
   findById(id: number): Promise<TaskEntity | null> {
-    return this.tasksRepository.findOneBy({ id });
+    return this.tasksRepository.findOneByOrFail({ id });
   }
 
   async create(data: Partial<TaskEntity>): Promise<TaskEntity> {
     return this.tasksRepository.save(data);
   }
 
-  async update(id: number, data: Partial<TaskEntity>): Promise<void> {
-    await this.tasksRepository.update(id, data);
+  async update(id: number, data: Partial<TaskEntity>): Promise<TaskEntity> {
+    return this.tasksRepository.save({ ...data, id });
   }
 
   async delete(id: number): Promise<void> {

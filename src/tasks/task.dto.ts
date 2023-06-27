@@ -1,4 +1,5 @@
 import { Allow, IsDateString, IsNumber, IsString } from 'class-validator';
+import { GroupItemDto } from '../groups/group.dto';
 
 export class TaskCreateDto {
   @IsString()
@@ -28,4 +29,9 @@ export class TaskItemDto {
 
   @IsDateString()
   public updatedAt: Date;
+}
+
+export class TaskItemListDto {
+  @Allow()
+  group: GroupItemDto;
 }
