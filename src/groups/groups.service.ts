@@ -10,8 +10,15 @@ export class GroupsService {
     private groupsRepository: Repository<GroupEntity>,
   ) {}
 
-  findAll(): Promise<GroupEntity[]> {
-    return this.groupsRepository.find();
+  findAll(isExtends = false): Promise<GroupEntity[]> {
+    if (isExtends) {
+      return this.groupsRepository.find({
+        relations: ['tasks'],
+        loadRelationIds: false,
+      });
+    } else {
+      return this.groupsRepository.find();
+    }
   }
 
   findById(id: number): Promise<GroupEntity | null> {

@@ -5,6 +5,7 @@ import {
   Patch,
   Delete,
   Param,
+  Query,
   Body,
   HttpCode,
   HttpStatus,
@@ -23,8 +24,8 @@ export class GroupsController {
   constructor(private readonly groupsService: GroupsService) {}
 
   @Get()
-  findAll(): Promise<GroupItemDto[]> {
-    return this.groupsService.findAll();
+  findAll(@Query('extends') isExtends?: boolean): Promise<GroupItemDto[]> {
+    return this.groupsService.findAll(isExtends);
   }
 
   @Get('/:id')
