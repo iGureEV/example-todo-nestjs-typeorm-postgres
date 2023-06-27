@@ -8,40 +8,45 @@ import {
   Body,
   HttpCode,
   HttpStatus,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { GroupsService } from './groups.service';
-import { GroupEntity } from './group.entity';
+import { GroupCreateUpdateDto, GroupItemDto } from './group.dto';
 
 @Controller('groups')
 export class GroupsController {
   constructor(private readonly groupsService: GroupsService) {}
 
   @Get()
-  findAll(): Promise<GroupEntity[]> {
+  findAll(): Promise<GroupItemDto[]> {
     return this.groupsService.findAll();
   }
 
   @Get('/:id')
-  async findById(@Param('id') id: number): Promise<GroupEntity | null> {
+  async findById(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<GroupItemDto | null> {
     return this.groupsService.findById(id);
   }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  async create(@Body() data: Partial<GroupEntity>): Promise<GroupEntity> {
-    return this.groupsService.create(data);
+  async create(
+    @Body() groupDateDto: GroupCreateUpdateDto,
+  ): Promise<GroupItemDto> {
+    return this.groupsService.create(groupDateDto);
   }
 
   @Patch('/:id')
   async update(
-    @Param('id') id: number,
-    @Body() data: Partial<GroupEntity>,
+    @Param('id', ParseIntPipe) id: number,
+    @Body() groupDateDto: GroupCreateUpdateDto,
   ): Promise<void> {
-    return this.groupsService.update(id, data);
+    return this.groupsService.update(id, groupDateDto);
   }
 
   @Delete('/:id')
-  async delete(@Param('id') id: number): Promise<void> {
+  async delete(@Param('id', ParseIntPipe) id: number): Promise<void> {
     return this.groupsService.delete(id);
   }
 }

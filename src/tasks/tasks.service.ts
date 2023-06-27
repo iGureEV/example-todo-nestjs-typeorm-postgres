@@ -19,7 +19,7 @@ export class TasksService {
   }
 
   async create(data: Partial<TaskEntity>): Promise<TaskEntity> {
-    return this.tasksRepository.create(data);
+    return this.tasksRepository.save(data);
   }
 
   async update(id: number, data: Partial<TaskEntity>): Promise<void> {

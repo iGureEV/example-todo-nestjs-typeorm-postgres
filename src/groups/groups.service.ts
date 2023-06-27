@@ -19,7 +19,7 @@ export class GroupsService {
   }
 
   async create(data: Partial<GroupEntity>): Promise<GroupEntity> {
-    return await this.groupsRepository.create(data);
+    return await this.groupsRepository.save(data);
   }
 
   async update(id: number, data: Partial<GroupEntity>): Promise<void> {
