@@ -1,26 +1,33 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  ManyToOne,
+} from 'typeorm';
 import { Group } from '../groups/group.entity';
 
-@Entity()
+@Entity('')
 export class Task {
   @PrimaryGeneratedColumn()
-  id!: number;
+  id: number;
 
   @Column({ type: 'varchar', length: 64 })
-  name!: string;
+  name: string;
 
-  @Column({ type: 'varchar', length: 256 })
-  description?: string;
+  @Column({ type: 'varchar', length: 256, nullable: true })
+  description: string;
 
-  @Column({ default: false })
-  isComplete?: boolean;
+  @Column({ nullable: true })
+  isComplete: boolean;
 
-  @ManyToOne(() => Group, (group) => group.id)
-  group?: Group;
+  @ManyToOne(() => Group, (group) => group.id, { nullable: true })
+  group: Group;
 
-  @Column({ name: 'created_at', type: 'timestamp', default: 'now()' })
-  createdAt?: Date;
+  @CreateDateColumn({ type: 'timestamp with time zone' })
+  createdAt: Date;
 
-  @Column({ name: 'update_at', type: 'timestamp', default: 'now()' })
-  updatedAt?: Date;
+  @UpdateDateColumn({ type: 'timestamp with time zone', nullable: true })
+  updatedAt: Date;
 }

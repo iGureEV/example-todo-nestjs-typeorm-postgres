@@ -1,23 +1,30 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToMany,
+} from 'typeorm';
 import { Task } from '../tasks/task.entity';
 
 @Entity()
 export class Group {
   @PrimaryGeneratedColumn()
-  id!: number;
+  public id: number;
 
   @Column({ type: 'varchar', length: 64 })
-  name!: string;
+  public name: string;
 
-  @Column({ type: 'varchar', length: 256 })
-  description?: string;
+  @Column({ type: 'varchar', length: 256, nullable: true })
+  public description: string;
 
-  @Column({ name: 'created_at', type: 'timestamp', default: 'now()' })
-  createdAt?: Date;
+  @CreateDateColumn({ type: 'timestamp with time zone' })
+  public createdAt: Date;
 
-  @Column({ name: 'update_at', type: 'timestamp', default: 'now()' })
-  updatedAt?: Date;
+  @UpdateDateColumn({ type: 'timestamp with time zone', nullable: true })
+  public updatedAt: Date;
 
   @OneToMany(() => Task, (task) => task.group)
-  tasks: Task[];
+  public tasks: Task[];
 }
