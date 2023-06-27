@@ -1,23 +1,14 @@
-import {
-  Allow,
-  IsDateString,
-  IsNumber,
-  IsNumberString,
-  IsString,
-} from 'class-validator';
+import { Allow, IsDateString, IsNumber, IsString } from 'class-validator';
 
-export class GroupIdParamDto {
-  @IsNumberString()
-  id: number;
-}
-
-export class GroupCreateUpdateDto {
+export class GroupCreateDto {
   @IsString()
   public name: string;
 
   @Allow()
   public description: string;
 }
+
+export class GroupUpdateDto extends GroupCreateDto {}
 
 export class GroupItemDto {
   @IsNumber()

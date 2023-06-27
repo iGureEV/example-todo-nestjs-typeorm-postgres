@@ -10,7 +10,7 @@ import {
   ParseIntPipe,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
-import { TaskCreateUpdateDto, TaskItemDto } from './task.dto';
+import { TaskCreateDto, TaskUpdateDto, TaskItemDto } from './task.dto';
 
 @Controller('tasks')
 export class TasksController {
@@ -30,14 +30,14 @@ export class TasksController {
 
   @Post()
   @HttpCode(201)
-  async create(@Body() taskDateDto: TaskCreateUpdateDto): Promise<TaskItemDto> {
+  async create(@Body() taskDateDto: TaskCreateDto): Promise<TaskItemDto> {
     return this.tasksService.create(taskDateDto);
   }
 
   @Patch(':id')
   async update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() taskDateDto: TaskCreateUpdateDto,
+    @Body() taskDateDto: TaskUpdateDto,
   ): Promise<void> {
     return this.tasksService.update(id, taskDateDto);
   }
