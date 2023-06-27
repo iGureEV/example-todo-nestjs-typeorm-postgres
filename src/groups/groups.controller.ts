@@ -10,6 +10,8 @@ import {
   HttpCode,
   HttpStatus,
   ParseIntPipe,
+  ParseBoolPipe,
+  DefaultValuePipe,
 } from '@nestjs/common';
 import { GroupsService } from './groups.service';
 import {
@@ -24,7 +26,10 @@ export class GroupsController {
   constructor(private readonly groupsService: GroupsService) {}
 
   @Get()
-  findAll(@Query('extends') isExtends?: boolean): Promise<GroupItemDto[]> {
+  findAll(
+    @Query('extends', new DefaultValuePipe(false), ParseBoolPipe)
+    isExtends?: boolean,
+  ): Promise<GroupItemDto[]> {
     return this.groupsService.findAll(isExtends);
   }
 
