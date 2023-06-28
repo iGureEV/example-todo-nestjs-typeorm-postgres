@@ -10,14 +10,14 @@ export class TasksService {
     private tasksRepository: Repository<TaskEntity>,
   ) {}
 
-  findAll(): Promise<TaskEntity[]> {
+  async findAll(): Promise<TaskEntity[]> {
     return this.tasksRepository.find({
       relations: ['group'],
       loadRelationIds: false,
     });
   }
 
-  findById(id: number): Promise<TaskEntity | null> {
+  async findById(id: number): Promise<TaskEntity | null> {
     return this.tasksRepository.findOne({ where: { id } });
   }
 

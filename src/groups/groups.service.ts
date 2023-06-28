@@ -10,7 +10,7 @@ export class GroupsService {
     private groupsRepository: Repository<GroupEntity>,
   ) {}
 
-  findAll(isExtends = false): Promise<GroupEntity[]> {
+  async findAll(isExtends = false): Promise<GroupEntity[]> {
     if (isExtends) {
       return this.groupsRepository.find({
         relations: ['tasks'],
@@ -21,7 +21,7 @@ export class GroupsService {
     }
   }
 
-  findById(id: number): Promise<GroupEntity | null> {
+  async findById(id: number): Promise<GroupEntity | null> {
     return this.groupsRepository.findOne({
       relations: ['tasks'],
       loadRelationIds: false,
