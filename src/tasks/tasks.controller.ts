@@ -7,7 +7,6 @@ import {
   Param,
   Body,
   HttpCode,
-  HttpStatus,
   HttpException,
   ParseIntPipe,
   UseInterceptors,
@@ -30,20 +29,7 @@ import {
   TaskCompleteDto,
 } from './task.dto';
 import { NotFoundInterceptor } from '../injectable';
-
-const ERROR_NOT_FOUND = 'No task found for given Id';
-
-const catchException = (err: HttpException): HttpException => {
-  if (0 <= err.message.indexOf('long for type character varying')) {
-    throw new HttpException(
-      {
-        message: err.message,
-      },
-      HttpStatus.BAD_REQUEST,
-    );
-  }
-  return err;
-};
+import { ERROR_NOT_FOUND_TASK, catchException } from '../util/exception';
 
 @ApiTags('tasks')
 @Controller('tasks')
@@ -64,7 +50,7 @@ export class TasksController {
   @ApiOperation({ summary: 'Получение задачи' })
   @ApiOkResponse({ type: TaskItemDto })
   @ApiNotFoundResponse()
-  @UseInterceptors(new NotFoundInterceptor(ERROR_NOT_FOUND))
+  @UseInterceptors(new NotFoundInterceptor(ERROR_NOT_FOUND_TASK))
   async findById(
     @Param('id', ParseIntPipe) id: number,
   ): Promise<TaskItemDto | null> {
@@ -87,7 +73,7 @@ export class TasksController {
   @ApiOkResponse({ type: TaskItemDto })
   @ApiNotFoundResponse()
   @ApiBadRequestResponse()
-  @UseInterceptors(new NotFoundInterceptor(ERROR_NOT_FOUND))
+  @UseInterceptors(new NotFoundInterceptor(ERROR_NOT_FOUND_TASK))
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() taskDataDto: TaskUpdateDto,
@@ -100,7 +86,7 @@ export class TasksController {
   @ApiOkResponse({ type: TaskItemDto })
   @ApiNotFoundResponse()
   @ApiBadRequestResponse()
-  @UseInterceptors(new NotFoundInterceptor(ERROR_NOT_FOUND))
+  @UseInterceptors(new NotFoundInterceptor(ERROR_NOT_FOUND_TASK))
   async complete(
     @Param('id', ParseIntPipe) id: number,
     @Body() taskDataDto: TaskCompleteDto,

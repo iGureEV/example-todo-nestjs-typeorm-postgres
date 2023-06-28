@@ -33,20 +33,7 @@ import {
   GroupItemListDto,
 } from './group.dto';
 import { NotFoundInterceptor } from '../injectable';
-
-const ERROR_NOT_FOUND = 'No group found for given Id';
-
-const catchException = (err: HttpException): HttpException => {
-  if (0 <= err.message.indexOf('long for type character varying')) {
-    throw new HttpException(
-      {
-        message: err.message,
-      },
-      HttpStatus.BAD_REQUEST,
-    );
-  }
-  return err;
-};
+import { ERROR_NOT_FOUND_GROUP, catchException } from '../util/exception';
 
 @ApiTags('groups')
 @Controller('groups')
@@ -68,7 +55,7 @@ export class GroupsController {
   @ApiOperation({ summary: 'Получение группы с задачами' })
   @ApiOkResponse({ type: GroupItemDto })
   @ApiNotFoundResponse()
-  @UseInterceptors(new NotFoundInterceptor(ERROR_NOT_FOUND))
+  @UseInterceptors(new NotFoundInterceptor(ERROR_NOT_FOUND_GROUP))
   async findById(
     @Param('id', ParseIntPipe) id: number,
   ): Promise<GroupItemListDto | null> {
@@ -91,7 +78,7 @@ export class GroupsController {
   @ApiOkResponse({ type: GroupItemDto })
   @ApiNotFoundResponse()
   @ApiBadRequestResponse()
-  @UseInterceptors(new NotFoundInterceptor(ERROR_NOT_FOUND))
+  @UseInterceptors(new NotFoundInterceptor(ERROR_NOT_FOUND_GROUP))
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() groupDateDto: GroupUpdateDto,
