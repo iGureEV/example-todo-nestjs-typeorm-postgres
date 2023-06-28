@@ -86,6 +86,6 @@ export class TasksController {
   @ApiNoContentResponse()
   @HttpCode(204)
   async delete(@Param('id', ParseIntPipe) id: number): Promise<void> {
-    return this.tasksService.delete(id);
+    await this.tasksService.delete(id);
   }
 }

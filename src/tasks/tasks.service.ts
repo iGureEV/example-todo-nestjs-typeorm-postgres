@@ -17,7 +17,7 @@ export class TasksService {
     });
   }
 
-  findById(id: number): Promise<TaskEntity> {
+  findById(id: number): Promise<TaskEntity | null> {
     return this.tasksRepository.findOne({ where: { id } });
   }
 

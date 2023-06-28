@@ -21,7 +21,7 @@ export class GroupsService {
     }
   }
 
-  findById(id: number): Promise<GroupEntity> {
+  findById(id: number): Promise<GroupEntity | null> {
     return this.groupsRepository.findOne({
       relations: ['tasks'],
       loadRelationIds: false,

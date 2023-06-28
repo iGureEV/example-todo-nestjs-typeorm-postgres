@@ -82,6 +82,6 @@ export class GroupsController {
   @ApiNoContentResponse()
   @HttpCode(HttpStatus.NO_CONTENT)
   async delete(@Param('id', ParseIntPipe) id: number): Promise<void> {
-    return this.groupsService.delete(id);
+    await this.groupsService.delete(id);
   }
 }
