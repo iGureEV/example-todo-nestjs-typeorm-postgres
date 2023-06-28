@@ -26,12 +26,7 @@ import {
   ApiBadRequestResponse,
 } from '@nestjs/swagger';
 import { GroupsService } from './groups.service';
-import {
-  GroupCreateDto,
-  GroupUpdateDto,
-  GroupItemDto,
-  GroupItemListDto,
-} from './group.dto';
+import { GroupCreateDto, GroupUpdateDto, GroupItemDto, GroupItemListDto } from './group.dto';
 import { NotFoundInterceptor } from '../injectable';
 import { ERROR_NOT_FOUND_GROUP, catchException } from '../util/exception';
 
@@ -56,9 +51,7 @@ export class GroupsController {
   @ApiOkResponse({ type: GroupItemDto })
   @ApiNotFoundResponse()
   @UseInterceptors(new NotFoundInterceptor(ERROR_NOT_FOUND_GROUP))
-  async findById(
-    @Param('id', ParseIntPipe) id: number,
-  ): Promise<GroupItemListDto | null> {
+  async findById(@Param('id', ParseIntPipe) id: number): Promise<GroupItemListDto | null> {
     return this.groupsService.findById(id);
   }
 
@@ -67,9 +60,7 @@ export class GroupsController {
   @ApiCreatedResponse({ type: GroupItemDto })
   @ApiBadRequestResponse()
   @HttpCode(HttpStatus.CREATED)
-  async create(
-    @Body() groupDateDto: GroupCreateDto,
-  ): Promise<GroupItemDto | HttpException> {
+  async create(@Body() groupDateDto: GroupCreateDto): Promise<GroupItemDto | HttpException> {
     return this.groupsService.create(groupDateDto).catch(catchException);
   }
 

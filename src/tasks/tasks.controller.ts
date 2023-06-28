@@ -21,13 +21,7 @@ import {
   ApiBadRequestResponse,
 } from '@nestjs/swagger';
 import { TasksService } from './tasks.service';
-import {
-  TaskCreateDto,
-  TaskUpdateDto,
-  TaskItemDto,
-  TaskItemListDto,
-  TaskCompleteDto,
-} from './task.dto';
+import { TaskCreateDto, TaskUpdateDto, TaskItemDto, TaskItemListDto, TaskCompleteDto } from './task.dto';
 import { NotFoundInterceptor } from '../injectable';
 import { ERROR_NOT_FOUND_TASK, catchException } from '../util/exception';
 
@@ -37,10 +31,7 @@ export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
   @Get()
-  @ApiOperation({
-    summary:
-      'Получение всех задач (с группами в которые они входят (если есть))',
-  })
+  @ApiOperation({ summary: 'Получение всех задач (с группами в которые они входят (если есть))' })
   @ApiOkResponse({ type: [TaskItemDto] })
   findAll(): Promise<TaskItemListDto[]> {
     return this.tasksService.findAll();
@@ -51,9 +42,7 @@ export class TasksController {
   @ApiOkResponse({ type: TaskItemDto })
   @ApiNotFoundResponse()
   @UseInterceptors(new NotFoundInterceptor(ERROR_NOT_FOUND_TASK))
-  async findById(
-    @Param('id', ParseIntPipe) id: number,
-  ): Promise<TaskItemDto | null> {
+  async findById(@Param('id', ParseIntPipe) id: number): Promise<TaskItemDto | null> {
     return this.tasksService.findById(id);
   }
 
@@ -62,9 +51,7 @@ export class TasksController {
   @ApiCreatedResponse({ type: TaskItemDto })
   @ApiBadRequestResponse()
   @HttpCode(201)
-  async create(
-    @Body() taskDataDto: TaskCreateDto,
-  ): Promise<TaskItemDto | HttpException> {
+  async create(@Body() taskDataDto: TaskCreateDto): Promise<TaskItemDto | HttpException> {
     return this.tasksService.create(taskDataDto).catch(catchException);
   }
 
