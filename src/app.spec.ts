@@ -2,8 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { IMemoryDb } from 'pg-mem';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { GroupEntity, GroupsModule, GroupsService } from './groups';
 import { TaskEntity, TasksModule, TasksService } from './tasks';
 import { setupDataSource } from '../test/setup';
@@ -13,7 +11,6 @@ describe('ToDo', () => {
   let dataSource: DataSource;
   let moduleRef: TestingModule;
 
-  let appService: AppService;
   let groupsService: GroupsService;
   let tasksService: TasksService;
 
@@ -39,19 +36,10 @@ describe('ToDo', () => {
         GroupsModule,
         TasksModule,
       ],
-      controllers: [AppController],
-      providers: [AppService],
     }).compile();
 
-    appService = moduleRef.get<AppService>(AppService);
     groupsService = moduleRef.get<GroupsService>(GroupsService);
     tasksService = moduleRef.get<TasksService>(TasksService);
-  });
-
-  describe('root', () => {
-    it('должно вернуть "Hello World!"', async () => {
-      expect(appService.getHello()).toBe('Hello World!');
-    });
   });
 
   describe('groups', () => {
