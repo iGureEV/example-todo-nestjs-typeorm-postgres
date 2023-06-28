@@ -22,7 +22,7 @@ import {
 } from '@nestjs/swagger';
 import { TasksService } from './tasks.service';
 import { TaskCreateDto, TaskUpdateDto, TaskItemDto, TaskItemListDto, TaskCompleteDto } from './task.dto';
-import { NotFoundInterceptor } from '../injectable';
+import { NotFoundInterceptor } from '../injectables';
 import { ERROR_NOT_FOUND_TASK } from '../util/exception';
 
 @ApiTags('tasks')

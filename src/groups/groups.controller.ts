@@ -27,7 +27,7 @@ import {
 } from '@nestjs/swagger';
 import { GroupsService } from './groups.service';
 import { GroupCreateDto, GroupUpdateDto, GroupItemDto, GroupItemListDto } from './group.dto';
-import { NotFoundInterceptor } from '../injectable';
+import { NotFoundInterceptor } from '../injectables';
 import { ERROR_NOT_FOUND_GROUP } from '../util/exception';
 
 @ApiTags('groups')
