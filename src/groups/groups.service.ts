@@ -34,7 +34,12 @@ export class GroupsService {
   }
 
   async update(id: number, data: Partial<GroupEntity>): Promise<GroupEntity> {
-    return await this.groupsRepository.save({ ...data, id });
+    let item: GroupEntity = await this.groupsRepository.findOneBy({ id });
+    if (item) {
+      item = await this.groupsRepository.merge(item, data);
+      await this.groupsRepository.update(id, item);
+    }
+    return item;
   }
 
   async delete(id: number): Promise<void> {

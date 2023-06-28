@@ -26,7 +26,12 @@ export class TasksService {
   }
 
   async update(id: number, data: Partial<TaskEntity>): Promise<TaskEntity> {
-    return this.tasksRepository.save({ ...data, id });
+    let item: TaskEntity = await this.tasksRepository.findOneBy({ id });
+    if (item) {
+      item = await this.tasksRepository.merge(item, data);
+      await this.tasksRepository.update(id, item);
+    }
+    return item;
   }
 
   async delete(id: number): Promise<void> {
