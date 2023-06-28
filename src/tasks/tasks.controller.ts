@@ -44,6 +44,7 @@ export class TasksController {
   @Get(':id')
   @ApiOperation({ summary: 'Получение задачи' })
   @ApiResponse({ status: 200, description: 'Задача', type: TaskItemDto })
+  @ApiResponse({ status: 404, description: 'Задача не найдена' })
   @UseInterceptors(new NotFoundInterceptor(ERROR_NOT_FOUND))
   async findById(
     @Param('id', ParseIntPipe) id: number,
@@ -62,6 +63,7 @@ export class TasksController {
   @Patch(':id')
   @ApiOperation({ summary: 'Изменение задачи' })
   @ApiResponse({ status: 200, description: 'Задача', type: TaskItemDto })
+  @ApiResponse({ status: 404, description: 'Задача не найдена' })
   @UseInterceptors(new NotFoundInterceptor(ERROR_NOT_FOUND))
   async update(
     @Param('id', ParseIntPipe) id: number,
@@ -73,6 +75,7 @@ export class TasksController {
   @Patch(':id/done')
   @ApiOperation({ summary: 'Проставить флаг завершенности для задачи' })
   @ApiResponse({ status: 200, description: 'Задача', type: TaskItemDto })
+  @ApiResponse({ status: 404, description: 'Задача не найдена' })
   @UseInterceptors(new NotFoundInterceptor(ERROR_NOT_FOUND))
   async complete(
     @Param('id', ParseIntPipe) id: number,

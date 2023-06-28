@@ -48,7 +48,8 @@ export class GroupsController {
 
   @Get('/:id')
   @ApiOperation({ summary: 'Получение группы с задачами' })
-  @ApiResponse({ status: 200, description: 'Задача', type: GroupItemDto })
+  @ApiResponse({ status: 200, description: 'Группа', type: GroupItemDto })
+  @ApiResponse({ status: 404, description: 'Группа не найдена' })
   @UseInterceptors(new NotFoundInterceptor(ERROR_NOT_FOUND))
   async findById(
     @Param('id', ParseIntPipe) id: number,
@@ -58,7 +59,7 @@ export class GroupsController {
 
   @Post()
   @ApiOperation({ summary: 'Создание группы' })
-  @ApiResponse({ status: 201, description: 'Задача', type: GroupItemDto })
+  @ApiResponse({ status: 201, description: 'Группа', type: GroupItemDto })
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() groupDateDto: GroupCreateDto): Promise<GroupItemDto> {
     return this.groupsService.create(groupDateDto);
@@ -66,7 +67,8 @@ export class GroupsController {
 
   @Patch('/:id')
   @ApiOperation({ summary: 'Изменение группы' })
-  @ApiResponse({ status: 200, description: 'Задача', type: GroupItemDto })
+  @ApiResponse({ status: 200, description: 'Группа', type: GroupItemDto })
+  @ApiResponse({ status: 404, description: 'Группа не найдена' })
   @UseInterceptors(new NotFoundInterceptor(ERROR_NOT_FOUND))
   async update(
     @Param('id', ParseIntPipe) id: number,
