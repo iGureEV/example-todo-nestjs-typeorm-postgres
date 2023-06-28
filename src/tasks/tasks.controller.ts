@@ -10,7 +10,14 @@ import {
   ParseIntPipe,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiOperation, ApiTags, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiOperation,
+  ApiTags,
+  ApiOkResponse,
+  ApiCreatedResponse,
+  ApiNoContentResponse,
+  ApiNotFoundResponse,
+} from '@nestjs/swagger';
 import { TasksService } from './tasks.service';
 import {
   TaskCreateDto,
@@ -33,19 +40,15 @@ export class TasksController {
     summary:
       'Получение всех задач (с группами в которые они входят (если есть))',
   })
-  @ApiResponse({
-    status: 200,
-    description: 'Массив задач',
-    type: [TaskItemDto],
-  })
+  @ApiOkResponse({ type: [TaskItemDto] })
   findAll(): Promise<TaskItemListDto[]> {
     return this.tasksService.findAll();
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Получение задачи' })
-  @ApiResponse({ status: 200, description: 'Задача', type: TaskItemDto })
-  @ApiResponse({ status: 404, description: 'Задача не найдена' })
+  @ApiOkResponse({ type: TaskItemDto })
+  @ApiNotFoundResponse()
   @UseInterceptors(new NotFoundInterceptor(ERROR_NOT_FOUND))
   async findById(
     @Param('id', ParseIntPipe) id: number,
@@ -55,7 +58,7 @@ export class TasksController {
 
   @Post()
   @ApiOperation({ summary: 'Создание задачи' })
-  @ApiResponse({ status: 201, description: 'Задача', type: TaskItemDto })
+  @ApiCreatedResponse({ type: TaskItemDto })
   @HttpCode(201)
   async create(@Body() taskDataDto: TaskCreateDto): Promise<TaskItemDto> {
     return this.tasksService.create(taskDataDto);
@@ -63,8 +66,8 @@ export class TasksController {
 
   @Patch(':id')
   @ApiOperation({ summary: 'Изменение задачи' })
-  @ApiResponse({ status: 200, description: 'Задача', type: TaskItemDto })
-  @ApiResponse({ status: 404, description: 'Задача не найдена' })
+  @ApiOkResponse({ type: TaskItemDto })
+  @ApiNotFoundResponse()
   @UseInterceptors(new NotFoundInterceptor(ERROR_NOT_FOUND))
   async update(
     @Param('id', ParseIntPipe) id: number,
@@ -75,8 +78,8 @@ export class TasksController {
 
   @Patch(':id/done')
   @ApiOperation({ summary: 'Проставить флаг завершенности для задачи' })
-  @ApiResponse({ status: 200, description: 'Задача', type: TaskItemDto })
-  @ApiResponse({ status: 404, description: 'Задача не найдена' })
+  @ApiOkResponse({ type: TaskItemDto })
+  @ApiNotFoundResponse()
   @UseInterceptors(new NotFoundInterceptor(ERROR_NOT_FOUND))
   async complete(
     @Param('id', ParseIntPipe) id: number,
@@ -87,7 +90,7 @@ export class TasksController {
 
   @Delete(':id')
   @ApiOperation({ summary: 'Удаление задачи' })
-  @ApiResponse({ status: 204 })
+  @ApiNoContentResponse()
   @HttpCode(204)
   async delete(@Param('id', ParseIntPipe) id: number): Promise<void> {
     return this.tasksService.delete(id);

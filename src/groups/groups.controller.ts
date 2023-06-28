@@ -14,7 +14,15 @@ import {
   DefaultValuePipe,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiOperation, ApiTags, ApiQuery, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiOperation,
+  ApiTags,
+  ApiQuery,
+  ApiOkResponse,
+  ApiCreatedResponse,
+  ApiNoContentResponse,
+  ApiNotFoundResponse,
+} from '@nestjs/swagger';
 import { GroupsService } from './groups.service';
 import {
   GroupCreateDto,
@@ -34,11 +42,7 @@ export class GroupsController {
   @Get()
   @ApiOperation({ summary: 'Получение списка групп' })
   @ApiQuery({ name: 'extends' })
-  @ApiResponse({
-    status: 200,
-    description: 'Массив задач',
-    type: [GroupItemListDto],
-  })
+  @ApiOkResponse({ type: [GroupItemListDto] })
   findAll(
     @Query('extends', new DefaultValuePipe(false), ParseBoolPipe)
     isExtends?: boolean,
@@ -48,8 +52,8 @@ export class GroupsController {
 
   @Get('/:id')
   @ApiOperation({ summary: 'Получение группы с задачами' })
-  @ApiResponse({ status: 200, description: 'Группа', type: GroupItemDto })
-  @ApiResponse({ status: 404, description: 'Группа не найдена' })
+  @ApiOkResponse({ type: GroupItemDto })
+  @ApiNotFoundResponse()
   @UseInterceptors(new NotFoundInterceptor(ERROR_NOT_FOUND))
   async findById(
     @Param('id', ParseIntPipe) id: number,
@@ -59,7 +63,7 @@ export class GroupsController {
 
   @Post()
   @ApiOperation({ summary: 'Создание группы' })
-  @ApiResponse({ status: 201, description: 'Группа', type: GroupItemDto })
+  @ApiCreatedResponse({ type: GroupItemDto })
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() groupDateDto: GroupCreateDto): Promise<GroupItemDto> {
     return this.groupsService.create(groupDateDto);
@@ -67,8 +71,8 @@ export class GroupsController {
 
   @Patch('/:id')
   @ApiOperation({ summary: 'Изменение группы' })
-  @ApiResponse({ status: 200, description: 'Группа', type: GroupItemDto })
-  @ApiResponse({ status: 404, description: 'Группа не найдена' })
+  @ApiOkResponse({ type: GroupItemDto })
+  @ApiNotFoundResponse()
   @UseInterceptors(new NotFoundInterceptor(ERROR_NOT_FOUND))
   async update(
     @Param('id', ParseIntPipe) id: number,
@@ -79,7 +83,7 @@ export class GroupsController {
 
   @Delete('/:id')
   @ApiOperation({ summary: 'Удаление группы и всех задач в ней' })
-  @ApiResponse({ status: 204 })
+  @ApiNoContentResponse()
   @HttpCode(HttpStatus.NO_CONTENT)
   async delete(@Param('id', ParseIntPipe) id: number): Promise<void> {
     return this.groupsService.delete(id);
