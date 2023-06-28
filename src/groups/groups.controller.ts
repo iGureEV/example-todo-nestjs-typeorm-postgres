@@ -12,6 +12,7 @@ import {
   ParseIntPipe,
   ParseBoolPipe,
   DefaultValuePipe,
+  UseInterceptors,
 } from '@nestjs/common';
 import { GroupsService } from './groups.service';
 import {
@@ -20,6 +21,9 @@ import {
   GroupItemDto,
   GroupItemListDto,
 } from './group.dto';
+import { NotFoundInterceptor } from '../injectable';
+
+const ERROR_NOT_FOUND = 'No group found for given Id';
 
 @Controller('groups')
 export class GroupsController {
@@ -34,6 +38,7 @@ export class GroupsController {
   }
 
   @Get('/:id')
+  @UseInterceptors(new NotFoundInterceptor(ERROR_NOT_FOUND))
   async findById(
     @Param('id', ParseIntPipe) id: number,
   ): Promise<GroupItemListDto | null> {
@@ -47,6 +52,7 @@ export class GroupsController {
   }
 
   @Patch('/:id')
+  @UseInterceptors(new NotFoundInterceptor(ERROR_NOT_FOUND))
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() groupDateDto: GroupUpdateDto,

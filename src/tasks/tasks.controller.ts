@@ -8,6 +8,7 @@ import {
   Body,
   HttpCode,
   ParseIntPipe,
+  UseInterceptors,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import {
@@ -16,6 +17,9 @@ import {
   TaskItemDto,
   TaskItemListDto,
 } from './task.dto';
+import { NotFoundInterceptor } from '../injectable';
+
+const ERROR_NOT_FOUND = 'No task found for given Id';
 
 @Controller('tasks')
 export class TasksController {
@@ -27,6 +31,7 @@ export class TasksController {
   }
 
   @Get(':id')
+  @UseInterceptors(new NotFoundInterceptor(ERROR_NOT_FOUND))
   async findById(
     @Param('id', ParseIntPipe) id: number,
   ): Promise<TaskItemListDto | null> {
@@ -40,15 +45,19 @@ export class TasksController {
   }
 
   @Patch(':id')
+  @UseInterceptors(new NotFoundInterceptor(ERROR_NOT_FOUND))
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() taskDateDto: TaskUpdateDto,
-  ): Promise<TaskItemDto> {
+  ): Promise<TaskItemListDto | null> {
     return this.tasksService.update(id, taskDateDto);
   }
 
   @Patch(':id/done')
-  async complete(@Param('id', ParseIntPipe) id: number): Promise<TaskItemDto> {
+  @UseInterceptors(new NotFoundInterceptor(ERROR_NOT_FOUND))
+  async complete(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<TaskItemListDto | null> {
     return this.tasksService.update(id, { isComplete: true });
   }
 
