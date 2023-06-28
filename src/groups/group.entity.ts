@@ -1,8 +1,16 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
+import {
+  BaseEntity,
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToMany,
+} from 'typeorm';
 import { TaskEntity } from '../tasks/task.entity';
 
 @Entity('group')
-export class GroupEntity {
+export class GroupEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   public id: number;
 
