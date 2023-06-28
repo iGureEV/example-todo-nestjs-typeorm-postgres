@@ -17,6 +17,7 @@ import {
   TaskUpdateDto,
   TaskItemDto,
   TaskItemListDto,
+  TaskCompleteDto,
 } from './task.dto';
 import { NotFoundInterceptor } from '../injectable';
 
@@ -79,8 +80,9 @@ export class TasksController {
   @UseInterceptors(new NotFoundInterceptor(ERROR_NOT_FOUND))
   async complete(
     @Param('id', ParseIntPipe) id: number,
+    @Body() taskDataDto: TaskCompleteDto
   ): Promise<TaskItemDto | null> {
-    return this.tasksService.update(id, { isComplete: true });
+    return this.tasksService.update(id, taskDataDto);
   }
 
   @Delete(':id')

@@ -14,6 +14,12 @@ export class TaskCreateDto {
 
 export class TaskUpdateDto extends TaskCreateDto {}
 
+export class TaskCompleteDto {
+  @ApiPropertyOptional({ type: Boolean, default: true })
+  @Allow()
+  public isComplete = true;
+}
+
 export class TaskItemDto {
   @ApiProperty()
   @IsNumber()
