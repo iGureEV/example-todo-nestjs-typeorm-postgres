@@ -17,8 +17,8 @@ export class TasksService {
     });
   }
 
-  findById(id: number): Promise<TaskEntity | null> {
-    return this.tasksRepository.findOneByOrFail({ id });
+  findById(id: number): Promise<TaskEntity> {
+    return this.tasksRepository.findOne({ where: { id } });
   }
 
   async create(data: Partial<TaskEntity>): Promise<TaskEntity> {
