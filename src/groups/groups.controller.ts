@@ -41,7 +41,7 @@ export class GroupsController {
 
   @Get()
   @ApiOperation({ summary: 'Получение списка групп' })
-  @ApiQuery({ name: 'extends' })
+  @ApiQuery({ name: 'extends', required: false, type: Boolean })
   @ApiOkResponse({ type: [GroupItemListDto] })
   findAll(
     @Query('extends', new DefaultValuePipe(false), ParseBoolPipe)

@@ -83,7 +83,7 @@ export class TasksController {
   @UseInterceptors(new NotFoundInterceptor(ERROR_NOT_FOUND))
   async complete(
     @Param('id', ParseIntPipe) id: number,
-    @Body() taskDataDto: TaskCompleteDto
+    @Body() taskDataDto: TaskCompleteDto,
   ): Promise<TaskItemDto | null> {
     return this.tasksService.update(id, taskDataDto);
   }
