@@ -57,8 +57,8 @@ export class TasksController {
   @ApiOperation({ summary: 'Создание задачи' })
   @ApiResponse({ status: 201, description: 'Задача', type: TaskItemDto })
   @HttpCode(201)
-  async create(@Body() taskDateDto: TaskCreateDto): Promise<TaskItemDto> {
-    return this.tasksService.create(taskDateDto);
+  async create(@Body() taskDataDto: TaskCreateDto): Promise<TaskItemDto> {
+    return this.tasksService.create(taskDataDto);
   }
 
   @Patch(':id')
@@ -68,9 +68,9 @@ export class TasksController {
   @UseInterceptors(new NotFoundInterceptor(ERROR_NOT_FOUND))
   async update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() taskDateDto: TaskUpdateDto,
+    @Body() taskDataDto: TaskUpdateDto,
   ): Promise<TaskItemDto | null> {
-    return this.tasksService.update(id, taskDateDto);
+    return this.tasksService.update(id, taskDataDto);
   }
 
   @Patch(':id/done')
