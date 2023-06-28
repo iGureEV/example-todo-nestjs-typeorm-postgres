@@ -9,6 +9,7 @@ import {
   Body,
   HttpCode,
   HttpStatus,
+  HttpException,
   ParseIntPipe,
   ParseBoolPipe,
   DefaultValuePipe,
@@ -22,6 +23,7 @@ import {
   ApiCreatedResponse,
   ApiNoContentResponse,
   ApiNotFoundResponse,
+  ApiBadRequestResponse,
 } from '@nestjs/swagger';
 import { GroupsService } from './groups.service';
 import {
@@ -33,6 +35,18 @@ import {
 import { NotFoundInterceptor } from '../injectable';
 
 const ERROR_NOT_FOUND = 'No group found for given Id';
+
+const catchException = (err: HttpException): HttpException => {
+  if (0 <= err.message.indexOf('long for type character varying')) {
+    throw new HttpException(
+      {
+        message: err.message,
+      },
+      HttpStatus.BAD_REQUEST,
+    );
+  }
+  return err;
+};
 
 @ApiTags('groups')
 @Controller('groups')
@@ -64,21 +78,25 @@ export class GroupsController {
   @Post()
   @ApiOperation({ summary: 'Создание группы' })
   @ApiCreatedResponse({ type: GroupItemDto })
+  @ApiBadRequestResponse()
   @HttpCode(HttpStatus.CREATED)
-  async create(@Body() groupDateDto: GroupCreateDto): Promise<GroupItemDto> {
-    return this.groupsService.create(groupDateDto);
+  async create(
+    @Body() groupDateDto: GroupCreateDto,
+  ): Promise<GroupItemDto | HttpException> {
+    return this.groupsService.create(groupDateDto).catch(catchException);
   }
 
   @Patch('/:id')
   @ApiOperation({ summary: 'Изменение группы' })
   @ApiOkResponse({ type: GroupItemDto })
   @ApiNotFoundResponse()
+  @ApiBadRequestResponse()
   @UseInterceptors(new NotFoundInterceptor(ERROR_NOT_FOUND))
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() groupDateDto: GroupUpdateDto,
-  ): Promise<GroupItemDto> {
-    return this.groupsService.update(id, groupDateDto);
+  ): Promise<GroupItemDto | HttpException> {
+    return this.groupsService.update(id, groupDateDto).catch(catchException);
   }
 
   @Delete('/:id')

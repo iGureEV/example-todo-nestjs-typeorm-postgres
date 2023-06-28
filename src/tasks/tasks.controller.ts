@@ -7,6 +7,8 @@ import {
   Param,
   Body,
   HttpCode,
+  HttpStatus,
+  HttpException,
   ParseIntPipe,
   UseInterceptors,
 } from '@nestjs/common';
@@ -17,6 +19,7 @@ import {
   ApiCreatedResponse,
   ApiNoContentResponse,
   ApiNotFoundResponse,
+  ApiBadRequestResponse,
 } from '@nestjs/swagger';
 import { TasksService } from './tasks.service';
 import {
@@ -29,6 +32,18 @@ import {
 import { NotFoundInterceptor } from '../injectable';
 
 const ERROR_NOT_FOUND = 'No task found for given Id';
+
+const catchException = (err: HttpException): HttpException => {
+  if (0 <= err.message.indexOf('long for type character varying')) {
+    throw new HttpException(
+      {
+        message: err.message,
+      },
+      HttpStatus.BAD_REQUEST,
+    );
+  }
+  return err;
+};
 
 @ApiTags('tasks')
 @Controller('tasks')
@@ -59,33 +74,38 @@ export class TasksController {
   @Post()
   @ApiOperation({ summary: 'Создание задачи' })
   @ApiCreatedResponse({ type: TaskItemDto })
+  @ApiBadRequestResponse()
   @HttpCode(201)
-  async create(@Body() taskDataDto: TaskCreateDto): Promise<TaskItemDto> {
-    return this.tasksService.create(taskDataDto);
+  async create(
+    @Body() taskDataDto: TaskCreateDto,
+  ): Promise<TaskItemDto | HttpException> {
+    return this.tasksService.create(taskDataDto).catch(catchException);
   }
 
   @Patch(':id')
   @ApiOperation({ summary: 'Изменение задачи' })
   @ApiOkResponse({ type: TaskItemDto })
   @ApiNotFoundResponse()
+  @ApiBadRequestResponse()
   @UseInterceptors(new NotFoundInterceptor(ERROR_NOT_FOUND))
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() taskDataDto: TaskUpdateDto,
-  ): Promise<TaskItemDto | null> {
-    return this.tasksService.update(id, taskDataDto);
+  ): Promise<TaskItemDto | HttpException> {
+    return this.tasksService.update(id, taskDataDto).catch(catchException);
   }
 
   @Patch(':id/done')
   @ApiOperation({ summary: 'Проставить флаг завершенности для задачи' })
   @ApiOkResponse({ type: TaskItemDto })
   @ApiNotFoundResponse()
+  @ApiBadRequestResponse()
   @UseInterceptors(new NotFoundInterceptor(ERROR_NOT_FOUND))
   async complete(
     @Param('id', ParseIntPipe) id: number,
     @Body() taskDataDto: TaskCompleteDto,
-  ): Promise<TaskItemDto | null> {
-    return this.tasksService.update(id, taskDataDto);
+  ): Promise<TaskItemDto | HttpException> {
+    return this.tasksService.update(id, taskDataDto).catch(catchException);
   }
 
   @Delete(':id')
