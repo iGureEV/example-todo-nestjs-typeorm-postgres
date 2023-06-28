@@ -28,7 +28,7 @@ import {
 import { GroupsService } from './groups.service';
 import { GroupCreateDto, GroupUpdateDto, GroupItemDto, GroupItemListDto } from './group.dto';
 import { NotFoundInterceptor } from '../injectable';
-import { ERROR_NOT_FOUND_GROUP, catchException } from '../util/exception';
+import { ERROR_NOT_FOUND_GROUP } from '../util/exception';
 
 @ApiTags('groups')
 @Controller('groups')
@@ -61,7 +61,7 @@ export class GroupsController {
   @ApiBadRequestResponse()
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() groupDateDto: GroupCreateDto): Promise<GroupItemDto | HttpException> {
-    return this.groupsService.create(groupDateDto).catch(catchException);
+    return this.groupsService.create(groupDateDto);
   }
 
   @Patch('/:id')
@@ -74,7 +74,7 @@ export class GroupsController {
     @Param('id', ParseIntPipe) id: number,
     @Body() groupDateDto: GroupUpdateDto,
   ): Promise<GroupItemDto | HttpException> {
-    return this.groupsService.update(id, groupDateDto).catch(catchException);
+    return this.groupsService.update(id, groupDateDto);
   }
 
   @Delete('/:id')

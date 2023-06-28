@@ -23,7 +23,7 @@ import {
 import { TasksService } from './tasks.service';
 import { TaskCreateDto, TaskUpdateDto, TaskItemDto, TaskItemListDto, TaskCompleteDto } from './task.dto';
 import { NotFoundInterceptor } from '../injectable';
-import { ERROR_NOT_FOUND_TASK, catchException } from '../util/exception';
+import { ERROR_NOT_FOUND_TASK } from '../util/exception';
 
 @ApiTags('tasks')
 @Controller('tasks')
@@ -52,7 +52,7 @@ export class TasksController {
   @ApiBadRequestResponse()
   @HttpCode(201)
   async create(@Body() taskDataDto: TaskCreateDto): Promise<TaskItemDto | HttpException> {
-    return this.tasksService.create(taskDataDto).catch(catchException);
+    return this.tasksService.create(taskDataDto);
   }
 
   @Patch(':id')
@@ -65,7 +65,7 @@ export class TasksController {
     @Param('id', ParseIntPipe) id: number,
     @Body() taskDataDto: TaskUpdateDto,
   ): Promise<TaskItemDto | HttpException> {
-    return this.tasksService.update(id, taskDataDto).catch(catchException);
+    return this.tasksService.update(id, taskDataDto);
   }
 
   @Patch(':id/done')
@@ -78,7 +78,7 @@ export class TasksController {
     @Param('id', ParseIntPipe) id: number,
     @Body() taskDataDto: TaskCompleteDto,
   ): Promise<TaskItemDto | HttpException> {
-    return this.tasksService.update(id, taskDataDto).catch(catchException);
+    return this.tasksService.update(id, taskDataDto);
   }
 
   @Delete(':id')

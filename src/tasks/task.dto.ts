@@ -1,14 +1,16 @@
-import { Allow, IsDateString, IsNumber, IsString, MaxLength } from 'class-validator';
+import { Allow, IsString, MaxLength } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { GroupItemDto } from '../groups/group.dto';
 
 export class TaskCreateDto {
   @ApiProperty()
   @IsString()
+  @MaxLength(64)
   name: string;
 
   @ApiProperty()
   @Allow()
+  @MaxLength(256)
   description: string;
 }
 
@@ -22,17 +24,13 @@ export class TaskCompleteDto {
 
 export class TaskItemDto {
   @ApiProperty()
-  @IsNumber()
   public id: number;
 
   @ApiProperty()
-  @IsString()
-  @MaxLength(64)
   public name: string;
 
   @ApiProperty()
   @Allow()
-  @MaxLength(256)
   public description: string;
 
   @ApiPropertyOptional({ type: Boolean, default: null })
@@ -40,11 +38,9 @@ export class TaskItemDto {
   public isComplete: boolean;
 
   @ApiProperty()
-  @IsDateString()
   public createdAt: Date;
 
   @ApiProperty()
-  @IsDateString()
   public updatedAt: Date;
 }
 
