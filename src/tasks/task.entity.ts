@@ -18,20 +18,20 @@ export class TaskEntity extends BaseEntity {
   name: string;
 
   @Column({ type: 'varchar', length: 256, nullable: true })
-  description: string;
+  description: string | null;
 
   @Column({ nullable: true })
-  isComplete: boolean;
+  isComplete: boolean | null;
 
   @ManyToOne(() => GroupEntity, (group) => group.id, {
     nullable: true,
     onDelete: 'CASCADE',
   })
-  group: GroupEntity;
+  group: GroupEntity | null;
 
   @CreateDateColumn({ type: 'timestamp with time zone' })
   createdAt: Date;
 
   @UpdateDateColumn({ type: 'timestamp with time zone', nullable: true })
-  updatedAt: Date;
+  updatedAt: Date | null;
 }

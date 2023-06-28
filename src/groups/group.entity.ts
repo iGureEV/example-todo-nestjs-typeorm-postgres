@@ -18,13 +18,13 @@ export class GroupEntity extends BaseEntity {
   public name: string;
 
   @Column({ type: 'varchar', length: 256, nullable: true })
-  public description: string;
+  public description: string | null;
 
   @CreateDateColumn({ type: 'timestamp with time zone' })
   public createdAt: Date;
 
   @UpdateDateColumn({ type: 'timestamp with time zone', nullable: true })
-  public updatedAt: Date;
+  public updatedAt: Date | null;
 
   @OneToMany(() => TaskEntity, (task) => task.group)
   public tasks: TaskEntity[];
