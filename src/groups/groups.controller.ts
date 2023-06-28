@@ -46,7 +46,7 @@ export class GroupsController {
     return this.groupsService.findAll(isExtends);
   }
 
-  @Get('/:id')
+  @Get(':id')
   @ApiOperation({ summary: 'Получение группы с задачами' })
   @ApiOkResponse({ type: GroupItemDto })
   @ApiNotFoundResponse()
@@ -60,11 +60,11 @@ export class GroupsController {
   @ApiCreatedResponse({ type: GroupItemDto })
   @ApiBadRequestResponse()
   @HttpCode(HttpStatus.CREATED)
-  async create(@Body() groupDateDto: GroupCreateDto): Promise<GroupItemDto | HttpException> {
-    return this.groupsService.create(groupDateDto);
+  async create(@Body() groupDataDto: GroupCreateDto): Promise<GroupItemDto | HttpException> {
+    return this.groupsService.create(groupDataDto);
   }
 
-  @Patch('/:id')
+  @Patch(':id')
   @ApiOperation({ summary: 'Изменение группы' })
   @ApiOkResponse({ type: GroupItemDto })
   @ApiNotFoundResponse()
@@ -72,12 +72,12 @@ export class GroupsController {
   @UseInterceptors(new NotFoundInterceptor(ERROR_NOT_FOUND_GROUP))
   async update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() groupDateDto: GroupUpdateDto,
+    @Body() groupDataDto: GroupUpdateDto,
   ): Promise<GroupItemDto | HttpException> {
-    return this.groupsService.update(id, groupDateDto);
+    return this.groupsService.update(id, groupDataDto);
   }
 
-  @Delete('/:id')
+  @Delete(':id')
   @ApiOperation({ summary: 'Удаление группы и всех задач в ней' })
   @ApiNoContentResponse()
   @HttpCode(HttpStatus.NO_CONTENT)
