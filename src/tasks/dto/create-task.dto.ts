@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class TaskCreateDto {
@@ -13,4 +13,11 @@ export class TaskCreateDto {
   @MaxLength(256)
   @IsOptional()
   description: string;
+
+  /*
+  @ApiProperty()
+  @IsNumber()
+  @IsOptional()
+  group?: number | null;
+  */
 }
