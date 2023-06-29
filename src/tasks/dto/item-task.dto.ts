@@ -1,4 +1,4 @@
-import { Allow } from 'class-validator';
+import { IsOptional } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class TaskItemDto {
@@ -9,12 +9,12 @@ export class TaskItemDto {
   public name: string;
 
   @ApiProperty()
-  @Allow()
+  @IsOptional()
   public description: string;
 
   @ApiPropertyOptional({ type: Boolean, default: null })
-  @Allow()
-  public isComplete: boolean;
+  @IsOptional()
+  public isComplete: boolean | null;
 
   @ApiProperty()
   public createdAt: Date;

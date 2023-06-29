@@ -1,8 +1,9 @@
-import { Allow } from 'class-validator';
+import { IsBoolean, IsOptional } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
 export class TaskCompleteDto {
   @ApiPropertyOptional({ type: Boolean, default: true })
-  @Allow()
+  @IsBoolean()
+  @IsOptional()
   public isComplete = true;
 }

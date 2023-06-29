@@ -1,21 +1,22 @@
-import { Allow, IsNumber } from 'class-validator';
+import { IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class GroupItemDto {
   @ApiProperty()
-  @IsNumber()
   public id: number;
 
   @ApiProperty()
   public name: string;
 
   @ApiProperty()
-  @Allow()
+  @IsOptional()
   public description: string;
 
   @ApiProperty({ type: Date })
+  @IsOptional()
   public createdAt: Date;
 
   @ApiProperty({ type: Date })
+  @IsOptional()
   public updatedAt: Date;
 }
