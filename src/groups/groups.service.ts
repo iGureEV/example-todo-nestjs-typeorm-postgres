@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GroupEntity } from './group.entity';
+import { GroupCreateDto, GroupUpdateDto } from './dto';
 
 @Injectable()
 export class GroupsService {
@@ -29,15 +30,14 @@ export class GroupsService {
     });
   }
 
-  async create(data: Partial<GroupEntity>): Promise<GroupEntity> {
-    return await this.groupsRepository.save(data);
+  async create(data: GroupCreateDto): Promise<GroupEntity> {
+    return await this.groupsRepository.create(data).save();
   }
 
-  async update(id: number, data: Partial<GroupEntity>): Promise<GroupEntity> {
-    let item: GroupEntity = await this.groupsRepository.findOneBy({ id });
+  async update(id: number, data: GroupUpdateDto): Promise<GroupEntity> {
+    let item: GroupEntity = await this.findById(id);
     if (item) {
-      item = await this.groupsRepository.merge(item, data);
-      await this.groupsRepository.update(id, item);
+      item = await this.groupsRepository.merge(item, data).save();
     }
     return item;
   }
