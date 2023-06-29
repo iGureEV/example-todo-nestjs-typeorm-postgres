@@ -1,9 +1,10 @@
-import { IsBoolean, IsOptional } from 'class-validator';
-import { ApiPropertyOptional } from '@nestjs/swagger';
+import { IsBoolean } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
+import { PickType } from '@nestjs/mapped-types';
+import { TaskItemDto } from './item-task.dto';
 
-export class TaskCompleteDto {
-  @ApiPropertyOptional({ type: Boolean, default: true })
+export class TaskCompleteDto extends PickType(TaskItemDto, ['isComplete']) {
+  @ApiProperty({ type: Boolean })
   @IsBoolean()
-  @IsOptional()
-  public isComplete = true;
+  public isComplete: boolean;
 }
