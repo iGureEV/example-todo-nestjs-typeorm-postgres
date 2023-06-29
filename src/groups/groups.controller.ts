@@ -11,8 +11,6 @@ import {
   HttpStatus,
   HttpException,
   ParseIntPipe,
-  ParseBoolPipe,
-  DefaultValuePipe,
   UseInterceptors,
 } from '@nestjs/common';
 import {
@@ -26,7 +24,7 @@ import {
   ApiBadRequestResponse,
 } from '@nestjs/swagger';
 import { GroupsService } from './groups.service';
-import { GroupCreateDto, GroupUpdateDto, GroupItemDto, GroupItemListDto } from './dto';
+import { GroupCreateDto, GroupUpdateDto, GroupItemDto, GroupItemListDto, GroupGetItemsDto } from './dto';
 import { NotFoundInterceptor } from '../injectables';
 import { ERROR_NOT_FOUND_GROUP } from '../util/exception';
 
@@ -39,11 +37,8 @@ export class GroupsController {
   @ApiOperation({ summary: 'Получение списка групп' })
   @ApiQuery({ name: 'extends', required: false, type: Boolean })
   @ApiOkResponse({ type: [GroupItemListDto] })
-  findAll(
-    @Query('extends', new DefaultValuePipe(false), ParseBoolPipe)
-    isExtends?: boolean,
-  ): Promise<GroupItemListDto[]> {
-    return this.groupsService.findAll(isExtends);
+  findAll(@Query() params: GroupGetItemsDto): Promise<GroupItemListDto[]> {
+    return this.groupsService.findAll(params.extends);
   }
 
   @Get(':id')
