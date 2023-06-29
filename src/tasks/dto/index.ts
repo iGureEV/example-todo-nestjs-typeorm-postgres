@@ -1,6 +1,6 @@
 import { Allow, IsString, MaxLength } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { GroupItemDto } from '../groups/group.dto';
+import { GroupItemDto } from '../../groups/dto';
 
 export class TaskCreateDto {
   @ApiProperty()

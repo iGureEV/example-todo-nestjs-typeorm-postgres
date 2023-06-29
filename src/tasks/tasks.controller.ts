@@ -21,7 +21,7 @@ import {
   ApiBadRequestResponse,
 } from '@nestjs/swagger';
 import { TasksService } from './tasks.service';
-import { TaskCreateDto, TaskUpdateDto, TaskItemDto, TaskItemListDto, TaskCompleteDto } from './task.dto';
+import { TaskCreateDto, TaskUpdateDto, TaskItemDto, TaskItemListDto, TaskCompleteDto } from './dto';
 import { NotFoundInterceptor } from '../injectables';
 import { ERROR_NOT_FOUND_TASK } from '../util/exception';
 
