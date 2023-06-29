@@ -26,7 +26,7 @@ import {
   ApiBadRequestResponse,
 } from '@nestjs/swagger';
 import { GroupsService } from './groups.service';
-import { GroupCreateDto, GroupUpdateDto, GroupItemDto, GroupItemListDto } from './group.dto';
+import { GroupCreateDto, GroupUpdateDto, GroupItemDto, GroupItemListDto } from './dto';
 import { NotFoundInterceptor } from '../injectables';
 import { ERROR_NOT_FOUND_GROUP } from '../util/exception';
 
