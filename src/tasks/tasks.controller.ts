@@ -78,7 +78,7 @@ export class TasksController {
     @Param('id', ParseIntPipe) id: number,
     @Body() taskDataDto: TaskCompleteDto,
   ): Promise<TaskItemDto | HttpException> {
-    return this.tasksService.update(id, taskDataDto);
+    return this.tasksService.complete(id, taskDataDto);
   }
 
   @Delete(':id')

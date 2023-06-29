@@ -2,10 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { TaskEntity } from './task.entity';
+import { GroupEntity, GroupsService } from '../groups';
+import { TaskCompleteDto, TaskCreateDto, TaskUpdateDto } from './dto';
 
 @Injectable()
 export class TasksService {
   constructor(
+    private groupsService: GroupsService,
     @InjectRepository(TaskEntity)
     private tasksRepository: Repository<TaskEntity>,
   ) {}
@@ -17,19 +20,34 @@ export class TasksService {
     });
   }
 
-  async findById(id: number): Promise<TaskEntity | null> {
+  async findById(id: number): Promise<TaskEntity> {
     return this.tasksRepository.findOne({ where: { id } });
   }
 
-  async create(data: Partial<TaskEntity>): Promise<TaskEntity> {
-    return this.tasksRepository.save(data);
+  async create({ groupId, ...data }: TaskCreateDto): Promise<TaskEntity> {
+    let group: GroupEntity;
+    if (typeof groupId === 'number') {
+      group = await this.groupsService.findById(groupId);
+    }
+    return await this.tasksRepository.create({ ...data, group }).save();
   }
 
-  async update(id: number, data: Partial<TaskEntity>): Promise<TaskEntity> {
-    let item: TaskEntity = await this.tasksRepository.findOneBy({ id });
+  async update(id: number, { groupId, ...data }: TaskUpdateDto): Promise<TaskEntity> {
+    let group: GroupEntity;
+    let item: TaskEntity = await this.findById(id);
     if (item) {
-      item = await this.tasksRepository.merge(item, data);
-      await this.tasksRepository.update(id, item);
+      if (typeof groupId === 'number') {
+        group = await this.groupsService.findById(groupId);
+      }
+      item = await this.tasksRepository.merge(item, { ...data, group }).save();
+    }
+    return item;
+  }
+
+  async complete(id: number, { isComplete }: TaskCompleteDto): Promise<TaskEntity> {
+    let item: TaskEntity = await this.findById(id);
+    if (item) {
+      item = await this.tasksRepository.merge(item, { isComplete }).save();
     }
     return item;
   }
